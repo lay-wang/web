@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOVIEN - 登录</title>
+    <style>
+        /* 全局样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+        
+        body {
+            background-color: #fff;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* 导航栏样式 */
+        .navbar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            background-color: #fff;
+            padding: 15px 30px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-container {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background-color: #3b82f6;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        /* 主体内容样式 */
+        .main-content {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: calc(100vh - 70px);
+            background-color: #f5f7fa;
+        }
+        
+        .auth-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 40px;
+            width: 400px;
+            max-width: 90%;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .auth-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #1a2a3a;
+        }
+        
+        .tab-container {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            position: relative;
+            color: #666;
+        }
+        
+        .tab.active {
+            color: #3b82f6;
+            font-weight: 500;
+        }
+        
+        .tab.active::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #3b82f6;
+        }
+        
+        .auth-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .auth-form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .phone-input-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .country-code {
+            flex: 0 0 120px;
+        }
+        
+        .phone-number {
+            flex: 1;
+        }
+        
+        .verification-container {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .verification-input {
+            flex: 1;
+        }
+        
+        .send-verification {
+            flex: 0 0 150px;
+        }
+        
+        .auth-form-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            transition: border-color 0.3s;
+        }
+        
+        .auth-form-input:focus {
+            border-color: #3b82f6;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
+        }
+        
+        .form-footer {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .auth-switch-link {
+            color: #3b82f6;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .auth-submit-btn {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background-color: #f5f5f5;
+            color: #333;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 16px;
+        }
+        
+        .auth-submit-btn:hover {
+            background-color: #eaeaea;
+        }
+        
+        .login-footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .login-footer a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <div class="navbar">
+        <div class="logo-container">
+            <img src="logo.jpg" alt="Logo" class="logo-img">
+        </div>
+    </div>
+    
+    <!-- 主体内容 -->
+    <div class="main-content">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h2 class="auth-title">登录</h2>
+            </div>
+            
+            <div class="tab-container">
+                <div class="tab active" id="usernameTab">用户名</div>
+                <div class="tab" id="phoneTab">手机号</div>
+            </div>
+            
+            <form class="auth-form" id="usernameForm">
+                <div class="auth-form-group">
+                    <input type="text" class="auth-form-input" placeholder="请输入用户名">
+                </div>
+                
+                <div class="auth-form-group">
+                    <input type="password" class="auth-form-input" placeholder="请输入密码">
+                </div>
+                
+                <div class="form-footer">
+                    <a href="#" class="auth-switch-link" onclick="showRegisterMessage(); return false;">新用户注册</a>
+                    <a href="#" class="auth-switch-link">忘记密码？</a>
+                </div>
+                
+                <button type="submit" class="auth-submit-btn">登 录</button>
+            </form>
+            
+            <form class="auth-form" id="phoneForm" style="display: none;">
+                <div class="phone-input-container">
+                    <div class="country-code">
+                        <select class="auth-form-input">
+                            <option>+86 中国大陆</option>
+                            <option>+852 香港</option>
+                            <option>+853 澳门</option>
+                            <option>+886 台湾</option>
+                        </select>
+                    </div>
+                    <div class="phone-number">
+                        <input type="tel" class="auth-form-input" placeholder="请输入手机号">
+                    </div>
+                </div>
+                
+                <div class="verification-container">
+                    <div class="verification-input">
+                        <input type="text" class="auth-form-input" placeholder="请输入验证码">
+                    </div>
+                    <div class="send-verification">
+                        <button type="button" class="auth-submit-btn" onclick="showVerificationMessage()">发送验证码</button>
+                    </div>
+                </div>
+                
+                <button type="submit" class="auth-submit-btn">登 录</button>
+            </form>
+            
+            <div class="login-footer">
+                登录即同意 <a href="#">《用户协议》</a> 和 <a href="#">《隐私政策》</a>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // 切换登录方式（用户名/手机号）
+        document.getElementById('usernameTab').addEventListener('click', function() {
+            document.getElementById('usernameTab').classList.add('active');
+            document.getElementById('phoneTab').classList.remove('active');
+            document.getElementById('usernameForm').style.display = 'flex';
+            document.getElementById('phoneForm').style.display = 'none';
+        });
+        
+        document.getElementById('phoneTab').addEventListener('click', function() {
+            document.getElementById('phoneTab').classList.add('active');
+            document.getElementById('usernameTab').classList.remove('active');
+            document.getElementById('phoneForm').style.display = 'flex';
+            document.getElementById('usernameForm').style.display = 'none';
+        });
+        
+        // 显示验证码提示消息
+        function showVerificationMessage() {
+            alert('暂不支持发送验证码');
+        }
+        
+        // 显示注册提示消息
+        function showRegisterMessage() {
+            alert('测试阶段暂不支持注册');
+        }
+    </script>
+</body>
+</html>
