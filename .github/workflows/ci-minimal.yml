@@ -1,0 +1,65 @@
+name: CI Minimal
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  quick-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install pyyaml
+
+      - name: Python syntax check (ROS2 launch)
+        run: |
+          python -m py_compile \
+            ros2_diffbot_stack/ros2_ws/src/diffbot_bringup/launch/sim.launch.py \
+            ros2_diffbot_stack/ros2_ws/src/diffbot_bringup/launch/slam.launch.py \
+            ros2_diffbot_stack/ros2_ws/src/diffbot_bringup/launch/nav.launch.py
+
+      - name: Validate YAML/XML files
+        run: |
+          python - <<'PY'
+          import pathlib
+          import xml.etree.ElementTree as ET
+          import yaml
+
+          base = pathlib.Path("ros2_diffbot_stack/ros2_ws/src/diffbot_bringup")
+
+          yaml_files = [
+              base / "config" / "slam_params.yaml",
+              base / "config" / "nav2_params.yaml",
+          ]
+          for file in yaml_files:
+              yaml.safe_load(file.read_text(encoding="utf-8"))
+              print(f"YAML OK: {file}")
+
+          xml_files = [
+              base / "package.xml",
+              base / "urdf" / "diffbot.urdf.xacro",
+          ]
+          for file in xml_files:
+              ET.parse(file)
+              print(f"XML OK: {file}")
+
+          print("All minimal checks passed.")
+          PY
+
+      - name: Required files check
+        run: |
+          test -f README.md
+          test -f ros2_diffbot_stack/README.md
